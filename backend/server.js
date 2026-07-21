@@ -4,6 +4,8 @@
  * Node.js + Express + SQLite (better-sqlite3).
  * See backend/README.md for setup/run/seed instructions.
  */
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 
