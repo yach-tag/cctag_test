@@ -1,0 +1,17 @@
+{
+  "name": "beijing-weekend-app-backend",
+  "version": "0.1.0",
+  "description": "Backend service for 北京周末去哪儿玩 (Beijing weekend trip recommender): destinations, favorites, and itinerary planning.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node db/seed.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
