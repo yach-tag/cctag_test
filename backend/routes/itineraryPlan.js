@@ -14,7 +14,7 @@ function resolveStartPoint(startPoint) {
 
 // POST /api/itinerary/plan
 // body: { startPoint: '天安门' | '中关村' | '国贸' | '首都机场', destinationIds: string[] }
-router.post('/plan', (req, res) => {
+router.post('/plan', async (req, res) => {
   const { startPoint, destinationIds } = req.body || {};
 
   const resolvedStart = resolveStartPoint(startPoint);
@@ -39,13 +39,22 @@ router.post('/plan', (req, res) => {
     return res.status(404).json({ error: 'some destinationIds were not found', missing });
   }
 
-  // Preserve nearest-neighbor greedy order starting from the chosen start point.
-  const plan = planItinerary(resolvedStart, rows);
+  try {
+    // Preserve nearest-neighbor greedy order starting from the chosen start point.
+    const plan = await planItinerary(resolvedStart, rows);
 
-  res.json({
-    startPoint: resolvedStart.label,
-    ...plan,
-  });
+    res.json({
+      startPoint: resolvedStart.label,
+      ...plan,
+    });
+  } catch (err) {
+    // planItinerary/getRoute already fall back to estimates on map-API
+    // failures internally, so reaching here means something unexpected
+    // (e.g. a bug) — surface a 500 rather than letting it crash the process.
+    // eslint-disable-next-line no-console
+    console.error('[itinerary/plan] unexpected error computing itinerary:', err);
+    res.status(500).json({ error: 'failed to compute itinerary' });
+  }
 });
 
 module.exports = router;

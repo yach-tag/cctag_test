@@ -4,11 +4,16 @@ Node.js + Express + SQLite (`better-sqlite3`) backend for the Beijing
 weekend trip recommender. Serves destination data, favorites, and
 itinerary/route planning.
 
-> **地图/交通数据当前为估算值，等待高德/百度地图API Key后需替换。**
-> All transit durations/costs in the seed data, and all itinerary-planning
-> distances/times, are estimates (great-circle/haversine distance + an
-> assumed average speed). See `services/mapProvider.js` — that is the one
-> file to change once a real map API key is available.
+> **配置AMAP_KEY后走真实高德数据，否则自动降级为估算值。**
+> Itinerary-planning distances/times (`services/mapProvider.js#getRoute`)
+> call 高德地图 (Amap) Web服务 API's 驾车路径规划 (driving directions)
+> endpoint when `AMAP_KEY` is set, for real road distance/duration. If
+> `AMAP_KEY` is unset, or the Amap call fails for any reason (bad key,
+> network error, rate limit/quota exhausted, no route found), it
+> automatically falls back to a great-circle/haversine distance + assumed
+> average speed estimate — the endpoint never throws because of this. The
+> seed data's transit durations/costs, and public-transit-mode routing,
+> are still estimates for now (see "Swapping in a real map API later" below).
 
 ## Install
 
@@ -16,6 +21,22 @@ itinerary/route planning.
 cd backend
 npm install
 ```
+
+## Map API key (AMAP_KEY)
+
+Real driving-route distance/duration comes from 高德开放平台 (Amap) Web服务
+API. To use it:
+
+```bash
+cp .env.example .env
+# then edit .env and set AMAP_KEY to a real key from https://lbs.amap.com/
+```
+
+`.env` is gitignored — never commit it. `AMAP_KEY` is loaded via `dotenv`
+(see `server.js` / `services/mapProvider.js`) and read from
+`process.env.AMAP_KEY`. If it's not set (e.g. CI, a fresh clone, or a
+teammate without a key yet), `getRoute()` just falls back to the haversine
+estimate — no crash, no required setup step.
 
 ## Seed the database
 
@@ -127,17 +148,20 @@ Seed data (20 real Beijing-area destinations, ~10/10 split across
 ## Swapping in a real map API later
 
 `services/mapProvider.js` exports a single `getRoute(origin, destination)`
-function that everything else in the backend calls through. Today it
-returns a haversine-distance estimate. To integrate a real provider
-(高德地图 / 百度地图 / 腾讯地图 directions API):
+async function that everything else in the backend calls through
+(`routes/itineraryPlan.js` and `services/itineraryPlanner.js` only depend
+on its `{ distanceKm, durationMinutes, mode, isEstimate }` return shape).
 
-1. Add the provider's SDK/HTTP client and API key (via env var, not
-   committed to the repo).
-2. Replace the body of `getRoute()` to call the real directions API and
-   map its response into the same `{ distanceKm, durationMinutes, mode,
-   isEstimate }` shape.
-3. Nothing else needs to change — `routes/itineraryPlan.js` and
-   `services/itineraryPlanner.js` only depend on that return shape.
+Driving-mode real data (高德 `v3/direction/driving`) is wired up — see
+above. Still estimate-only / follow-up ideas:
+
+- **公交 (transit) mode**: `v3/direction/transit/integrated` returns
+  multi-segment plans (walk/bus/subway transfers) which need more parsing
+  than driving's single `paths[0]`; not done in this pass to avoid
+  over-scoping. `getDrivingRoute()` in `mapProvider.js` is a template for
+  adding a `getTransitRoute()` alongside it.
+- Alternative providers (百度地图 / 腾讯地图 directions API) could be added
+  as additional fallback tiers before the haversine estimate.
 
 ## Tests
 
