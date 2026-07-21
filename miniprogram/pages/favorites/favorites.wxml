@@ -1,0 +1,38 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <view wx:elif="{{favorites.length === 0}}" class="empty-state">
+    还没有收藏，去"发现"页点亮 ☆ 收藏喜欢的目的地吧～
+  </view>
+
+  <view wx:else class="card-list">
+    <view class="dest-card" wx:for="{{favorites}}" wx:key="id">
+      <view class="card-art {{item.artClass}}">
+        <text class="card-art-label">{{item.category}}</text>
+      </view>
+      <view class="card-body">
+        <view class="card-header">
+          <text class="card-title">{{item.name}}</text>
+          <view class="fav-toggle fav-toggle--active" data-id="{{item.id}}" catchtap="onRemoveFavorite">
+            ★
+          </view>
+        </view>
+        <text class="card-tagline">{{item.tagline}}</text>
+        <view class="card-meta-row">
+          <text class="card-meta">⏱ {{item.bestDuration}}</text>
+          <text class="card-meta">🗓 {{item.bestSeason}}</text>
+        </view>
+        <view class="card-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+        <view
+          class="btn-secondary remove-fav-btn"
+          data-id="{{item.id}}"
+          catchtap="onRemoveFavorite"
+        >
+          取消收藏
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
