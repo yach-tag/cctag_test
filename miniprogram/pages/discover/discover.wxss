@@ -1,0 +1,153 @@
+/**
+ * Simplification note: Mini Programs can't easily inline arbitrary SVG in
+ * WXML the way the earlier HTML/SVG demo did. Instead of a unique
+ * illustration per destination, each card uses one of two pre-defined
+ * WXSS gradient "art" backgrounds keyed by category
+ * (.card-art--nature / .card-art--culture). This keeps the 中国风 palette
+ * consistent without needing per-destination static image assets yet.
+ */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #FBF6EA;
+  border: 1px solid rgba(43, 36, 32, 0.12);
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+}
+
+.search-input {
+  flex: 1;
+  margin-left: 12rpx;
+  font-size: 28rpx;
+  color: #2B2420;
+}
+
+.category-row {
+  white-space: nowrap;
+  margin: 20rpx 0;
+}
+
+.category-chip {
+  display: inline-block;
+  padding: 12rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: 999px;
+  font-size: 26rpx;
+  color: #6B5B45;
+  background: #EFE6CF;
+}
+
+.category-chip--active {
+  background: #B7282E;
+  color: #FBF6EA;
+  font-weight: 600;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.dest-card {
+  background: #FFFDF6;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(43, 36, 32, 0.08);
+}
+
+.card-art {
+  height: 160rpx;
+  display: flex;
+  align-items: flex-end;
+  padding: 16rpx;
+  box-sizing: border-box;
+}
+
+.card-art--nature {
+  background: linear-gradient(135deg, #4F7B52, #A9C77A);
+}
+
+.card-art--culture {
+  background: linear-gradient(135deg, #8A2B2B, #C89B3C);
+}
+
+.card-art-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 22rpx;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+}
+
+.card-body {
+  padding: 20rpx 24rpx 24rpx;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #2B2420;
+}
+
+.fav-toggle {
+  font-size: 40rpx;
+  color: #C89B3C;
+  padding: 0 8rpx;
+}
+
+.fav-toggle--active {
+  color: #B7282E;
+}
+
+.card-tagline {
+  display: block;
+  font-size: 26rpx;
+  color: #5A4E3E;
+  margin: 10rpx 0;
+}
+
+.card-meta-row {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.card-meta {
+  font-size: 24rpx;
+  color: #8A7A63;
+}
+
+.card-tags {
+  margin-bottom: 8rpx;
+}
+
+.transit-list {
+  border-top: 1px solid rgba(43, 36, 32, 0.08);
+  padding-top: 12rpx;
+  margin-top: 8rpx;
+}
+
+.transit-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #5A4E3E;
+  padding: 6rpx 0;
+}
+
+.transit-mode {
+  color: #8A5A2B;
+  font-weight: 600;
+}
+
+.add-to-plan-btn {
+  margin-top: 16rpx;
+}

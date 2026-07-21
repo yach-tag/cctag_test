@@ -1,0 +1,84 @@
+/**
+ * Global styles + 中国风 (Chinese-aesthetic) palette.
+ *
+ *   宣纸米黄底 (rice-paper cream background) : #F5EFE0 / #FBF6EA
+ *   朱红 (vermilion accent)                  : #B7282E
+ *   墨黑 (ink black)                          : #2B2420
+ *   赭石金 (ochre gold accent)                : #C89B3C
+ *
+ * Mini Programs don't support arbitrary inline SVG in WXML the way the
+ * earlier HTML/SVG demo did, so destination "art" is rendered as small,
+ * pre-defined WXSS gradient blocks keyed by category (see
+ * pages/discover/discover.wxss `.card-art--nature` / `.card-art--culture`)
+ * rather than a unique illustration per destination. This is a deliberate
+ * simplification for this phase, not an oversight.
+ */
+
+page {
+  background-color: #F5EFE0;
+  color: #2B2420;
+  font-family: -apple-system-font, 'PingFang SC', 'Helvetica Neue', sans-serif;
+}
+
+.page {
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2B2420;
+  margin: 24rpx 0 16rpx;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(43, 36, 32, 0.12);
+  margin: 16rpx 0;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 22rpx;
+  color: #8A5A2B;
+  background: rgba(200, 155, 60, 0.16);
+  border-radius: 8rpx;
+  padding: 4rpx 12rpx;
+  margin: 0 8rpx 8rpx 0;
+}
+
+.btn-primary {
+  background: #B7282E;
+  color: #FBF6EA;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #B7282E;
+  border: 1px solid #B7282E;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  text-align: center;
+  padding: 18rpx 0;
+}
+
+.btn-disabled {
+  background: #D9D0BC;
+  color: #8A7A63;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+
+.empty-state {
+  text-align: center;
+  color: #8A7A63;
+  font-size: 26rpx;
+  padding: 96rpx 0;
+}

@@ -1,0 +1,73 @@
+<view class="page">
+  <view class="search-bar">
+    <icon type="search" size="16" color="#8A7A63" />
+    <input
+      class="search-input"
+      placeholder="搜索目的地 / 分类 / 标签，如“长城”"
+      value="{{keyword}}"
+      confirm-type="search"
+      bindinput="onKeywordInput"
+      bindconfirm="onSearch"
+    />
+  </view>
+
+  <scroll-view class="category-row" scroll-x enable-flex>
+    <view
+      wx:for="{{categories}}"
+      wx:key="*this"
+      class="category-chip {{activeCategory === item ? 'category-chip--active' : ''}}"
+      data-category="{{item}}"
+      bindtap="onCategoryTap"
+    >
+      {{item === 'ALL' ? '全部' : item}}
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{loading}}" class="empty-state">加载中...</view>
+
+  <view wx:elif="{{destinations.length === 0}}" class="empty-state">
+    没有找到匹配的目的地，换个关键词试试～
+  </view>
+
+  <view wx:else class="card-list">
+    <view class="dest-card" wx:for="{{destinations}}" wx:key="id" data-id="{{item.id}}">
+      <view class="card-art {{item.artClass}}">
+        <text class="card-art-label">{{item.category}}</text>
+      </view>
+      <view class="card-body">
+        <view class="card-header">
+          <text class="card-title">{{item.name}}</text>
+          <view
+            class="fav-toggle {{item.isFavorite ? 'fav-toggle--active' : ''}}"
+            data-id="{{item.id}}"
+            data-isfav="{{item.isFavorite}}"
+            catchtap="onToggleFavorite"
+          >
+            {{item.isFavorite ? '★' : '☆'}}
+          </view>
+        </view>
+        <text class="card-tagline">{{item.tagline}}</text>
+        <view class="card-meta-row">
+          <text class="card-meta">⏱ {{item.bestDuration}}</text>
+          <text class="card-meta">🗓 {{item.bestSeason}}</text>
+        </view>
+        <view class="card-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+        <view class="transit-list">
+          <view class="transit-item" wx:for="{{item.transitOptions}}" wx:for-item="opt" wx:key="mode">
+            <text class="transit-mode">{{opt.mode}}</text>
+            <text class="transit-detail">{{opt.durationEstimate}} · {{opt.costEstimate}}</text>
+          </view>
+        </view>
+        <view
+          class="{{item.isSelected ? 'btn-primary' : 'btn-secondary'}} add-to-plan-btn"
+          data-id="{{item.id}}"
+          catchtap="onToggleSelectForPlan"
+        >
+          {{item.isSelected ? '已加入行程 ✓' : '加入行程规划'}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

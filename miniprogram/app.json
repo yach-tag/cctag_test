@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/discover/discover",
+    "pages/itinerary/itinerary",
+    "pages/favorites/favorites"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2B2420",
+    "navigationBarTitleText": "北京周末去哪儿玩",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F5EFE0"
+  },
+  "tabBar": {
+    "color": "#8A7A63",
+    "selectedColor": "#B7282E",
+    "backgroundColor": "#FBF6EA",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/itinerary/itinerary",
+        "text": "行程规划"
+      },
+      {
+        "pagePath": "pages/favorites/favorites",
+        "text": "收藏"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}
