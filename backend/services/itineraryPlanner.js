@@ -13,8 +13,11 @@
  * and good enough for a handful of weekend stops. It is NOT guaranteed to
  * find the shortest possible overall route.
  *
- * Distances/durations are haversine-based ESTIMATES via services/mapProvider.js,
- * pending real map API (高德/百度) integration for actual road/transit routing.
+ * Distances/durations come from services/mapProvider.js#getRoute, which
+ * calls the real 高德 driving-directions API when AMAP_KEY is configured
+ * and automatically falls back to a haversine-based estimate otherwise
+ * (or on any API failure). getRoute is async (real routing is a network
+ * call), so planItinerary is async too.
  * -----------------------------------------------------------------------
  */
 
@@ -27,7 +30,7 @@ const { getRoute } = require('./mapProvider');
  * @param {Array<{ id: string, name: string, lat: number, lng: number }>} destinations
  *   The full destination objects for the ids the user selected, in any order.
  *
- * @returns {{
+ * @returns {Promise<{
  *   stops: Array<{
  *     order: number,
  *     destinationId: string,
@@ -37,9 +40,9 @@ const { getRoute } = require('./mapProvider');
  *   }>,
  *   totalDistanceKm: number,
  *   totalEstimatedTransitMinutes: number,
- * }}
+ * }>}
  */
-function planItinerary(startPoint, destinations) {
+async function planItinerary(startPoint, destinations) {
   const remaining = [...destinations];
   const stops = [];
 
@@ -51,10 +54,10 @@ function planItinerary(startPoint, destinations) {
   while (remaining.length > 0) {
     // Find the nearest remaining destination to the current point.
     let nearestIndex = 0;
-    let nearestRoute = getRoute(currentPoint, remaining[0]);
+    let nearestRoute = await getRoute(currentPoint, remaining[0]);
 
     for (let i = 1; i < remaining.length; i += 1) {
-      const route = getRoute(currentPoint, remaining[i]);
+      const route = await getRoute(currentPoint, remaining[i]);
       if (route.distanceKm < nearestRoute.distanceKm) {
         nearestIndex = i;
         nearestRoute = route;
