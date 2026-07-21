@@ -1,0 +1,78 @@
+<view class="page">
+  <view class="section-title">选择出发点</view>
+  <scroll-view class="start-point-row" scroll-x enable-flex>
+    <view
+      wx:for="{{startPoints}}"
+      wx:key="*this"
+      class="chip {{activeStartPoint === item ? 'chip--active' : ''}}"
+      data-point="{{item}}"
+      bindtap="onStartPointTap"
+    >
+      {{item}}
+    </view>
+  </scroll-view>
+
+  <view class="section-title">已选目的地（{{selectedDestinations.length}}）</view>
+
+  <view wx:if="{{loadingSelection}}" class="empty-state">加载中...</view>
+
+  <view wx:elif="{{selectedDestinations.length === 0}}" class="empty-state">
+    还没有选择目的地，去"发现"页点击"加入行程规划"吧～
+  </view>
+
+  <view wx:else class="selected-list">
+    <view class="selected-item" wx:for="{{selectedDestinations}}" wx:key="id">
+      <view class="selected-art {{item.artClass}}"></view>
+      <view class="selected-info">
+        <text class="selected-name">{{item.name}}</text>
+        <text class="selected-category">{{item.category}}</text>
+      </view>
+      <view class="remove-btn" data-id="{{item.id}}" catchtap="onRemoveSelected">移除</view>
+    </view>
+  </view>
+
+  <view
+    class="{{selectedDestinations.length === 0 || planning ? 'btn-disabled' : 'btn-primary'}} plan-btn"
+    bindtap="onGeneratePlan"
+  >
+    {{planning ? '规划中...' : '生成行程'}}
+  </view>
+
+  <view wx:if="{{plan}}" class="plan-result">
+    <view class="divider"></view>
+    <view class="section-title">行程时间轴 · 从{{plan.startPoint}}出发</view>
+
+    <view class="timeline">
+      <view class="timeline-item" wx:for="{{plan.stops}}" wx:key="destinationId">
+        <view class="timeline-marker">{{item.order}}</view>
+        <view class="timeline-body">
+          <text class="timeline-name">{{item.name}}</text>
+          <text class="timeline-meta">距上一站 {{item.legDistanceLabel}} · 预计耗时 {{item.transitLabel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="summary-box">
+      <view class="summary-row">
+        <text class="summary-label">总距离</text>
+        <text class="summary-value">{{plan.totalDistanceKm}} km</text>
+      </view>
+      <view class="summary-row">
+        <text class="summary-label">预计总用时</text>
+        <text class="summary-value">{{plan.totalLabel}}</text>
+      </view>
+    </view>
+
+    <view class="save-row">
+      <input
+        class="save-input"
+        placeholder="行程名称（可选）"
+        value="{{itineraryName}}"
+        bindinput="onItineraryNameInput"
+      />
+    </view>
+    <view class="{{saving ? 'btn-disabled' : 'btn-primary'}} save-btn" bindtap="onSavePlan">
+      {{saving ? '保存中...' : '保存行程'}}
+    </view>
+  </view>
+</view>

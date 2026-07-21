@@ -1,0 +1,95 @@
+/**
+ * WXSS is page-scoped in Mini Programs (it doesn't cascade from another
+ * page's .wxss), so the card look is duplicated here from
+ * pages/discover/discover.wxss rather than shared — same 中国风 palette,
+ * same card shape, just re-declared for this page.
+ */
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.dest-card {
+  background: #FFFDF6;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(43, 36, 32, 0.08);
+}
+
+.card-art {
+  height: 160rpx;
+  display: flex;
+  align-items: flex-end;
+  padding: 16rpx;
+  box-sizing: border-box;
+}
+
+.card-art--nature {
+  background: linear-gradient(135deg, #4F7B52, #A9C77A);
+}
+
+.card-art--culture {
+  background: linear-gradient(135deg, #8A2B2B, #C89B3C);
+}
+
+.card-art-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 22rpx;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+}
+
+.card-body {
+  padding: 20rpx 24rpx 24rpx;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #2B2420;
+}
+
+.fav-toggle {
+  font-size: 40rpx;
+  color: #C89B3C;
+  padding: 0 8rpx;
+}
+
+.fav-toggle--active {
+  color: #B7282E;
+}
+
+.card-tagline {
+  display: block;
+  font-size: 26rpx;
+  color: #5A4E3E;
+  margin: 10rpx 0;
+}
+
+.card-meta-row {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.card-meta {
+  font-size: 24rpx;
+  color: #8A7A63;
+}
+
+.card-tags {
+  margin-bottom: 8rpx;
+}
+
+.remove-fav-btn {
+  margin-top: 16rpx;
+}
